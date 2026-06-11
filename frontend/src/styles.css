@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #17202a;
+  background: #f8fafc;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.input {
+  @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-academy-blue focus:ring-2 focus:ring-academy-blue/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md bg-academy-blue px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800;
+}
+
+.section {
+  @apply mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+/* Neon Glow Blue Button */
+.btn-neon-blue {
+  background-color: #dbeafe;
+  border-radius: 100px;
+  box-shadow: rgba(16, 69, 184, .2) 0 -25px 18px -14px inset,
+              rgba(16, 69, 184, .15) 0 1px 2px,
+              rgba(16, 69, 184, .15) 0 2px 4px,
+              rgba(16, 69, 184, .15) 0 4px 8px,
+              rgba(16, 69, 184, .15) 0 8px 16px,
+              rgba(16, 69, 184, .15) 0 16px 32px;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-neon-blue:hover {
+  box-shadow: rgba(16, 69, 184, .35) 0 -25px 18px -14px inset,
+              rgba(16, 69, 184, .25) 0 1px 2px,
+              rgba(16, 69, 184, .25) 0 2px 4px,
+              rgba(16, 69, 184, .25) 0 4px 8px,
+              rgba(16, 69, 184, .25) 0 8px 16px,
+              rgba(16, 69, 184, .25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+/* Neon Glow Green Button */
+.btn-neon-green {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,
+              rgba(44, 187, 99, .15) 0 1px 2px,
+              rgba(44, 187, 99, .15) 0 2px 4px,
+              rgba(44, 187, 99, .15) 0 4px 8px,
+              rgba(44, 187, 99, .15) 0 8px 16px,
+              rgba(44, 187, 99, .15) 0 16px 32px;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-neon-green:hover {
+  box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset,
+              rgba(44, 187, 99, .25) 0 1px 2px,
+              rgba(44, 187, 99, .25) 0 2px 4px,
+              rgba(44, 187, 99, .25) 0 4px 8px,
+              rgba(44, 187, 99, .25) 0 8px 16px,
+              rgba(44, 187, 99, .25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+/* Gradient Slide Button (Button 87 style) */
+.btn-gradient-slide {
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 12px;
+  border: 0;
+  font-weight: 700;
+  box-shadow: 0px 0px 14px -7px #f09819;
+  background-image: linear-gradient(45deg, #1045b8 0%, #f59e0b 51%, #1045b8 100%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-gradient-slide:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-gradient-slide:active {
+  transform: scale(0.95);
+}
+
+.btn-gradient-slide:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

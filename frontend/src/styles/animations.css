@@ -1,0 +1,227 @@
+/* ============================================
+   HMITLC LMS - Professional Animations
+   ============================================ */
+
+/* Page transitions */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.93); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Utility animation classes */
+.animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+.animate-fade-in-down { animation: fadeInDown 0.5s ease forwards; }
+.animate-fade-in { animation: fadeIn 0.4s ease forwards; }
+.animate-slide-left { animation: slideInLeft 0.5s ease forwards; }
+.animate-slide-right { animation: slideInRight 0.5s ease forwards; }
+.animate-scale-in { animation: scaleIn 0.4s ease forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+/* Stagger delays */
+.delay-100 { animation-delay: 0.1s; opacity: 0; }
+.delay-200 { animation-delay: 0.2s; opacity: 0; }
+.delay-300 { animation-delay: 0.3s; opacity: 0; }
+.delay-400 { animation-delay: 0.4s; opacity: 0; }
+.delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+/* Hover transitions */
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+.hover-scale {
+  transition: transform 0.2s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Button press effect */
+.btn-press {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+/* Smooth page wrapper */
+.page-enter {
+  animation: fadeInUp 0.45s ease forwards;
+}
+
+/* Card animations */
+.card-animate {
+  animation: scaleIn 0.4s ease forwards;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-animate:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+}
+
+/* Navbar */
+.navbar-animate {
+  animation: fadeInDown 0.5s ease forwards;
+}
+
+/* Table row hover */
+.table-row-animate {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.table-row-animate:hover {
+  background: rgba(16,69,184,0.04);
+  transform: translateX(2px);
+}
+
+/* Input focus */
+.input-animate {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.input-animate:focus {
+  transform: scale(1.01);
+  box-shadow: 0 0 0 3px rgba(16,69,184,0.12);
+}
+
+/* Sidebar/modal */
+.modal-animate {
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Loading shimmer */
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Toast animation */
+.toast-animate {
+  animation: slideInRight 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Badge pulse */
+.badge-pulse {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Skeleton loading enhancement */
+.skeleton-animate {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+/* Badge animation */
+.badge-animate {
+  animation: scaleIn 0.3s ease forwards;
+}
+
+/* Dropdown menu */
+.dropdown-animate {
+  animation: fadeInDown 0.25s ease forwards;
+  transform-origin: top;
+}
+
+/* Sidebar menu item */
+.sidebar-item-animate {
+  transition: all 0.2s ease;
+}
+.sidebar-item-animate:hover {
+  background: rgba(16,69,184,0.08);
+  padding-left: 12px;
+}
+
+/* Icon hover */
+.icon-animate {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.icon-animate:hover {
+  transform: scale(1.1);
+}
+
+/* Tab animation */
+.tab-animate {
+  transition: all 0.3s ease;
+}
+.tab-animate.active {
+  border-bottom: 2px solid #1045b8;
+  color: #1045b8;
+}
+
+/* Avatar hover */
+.avatar-animate {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.avatar-animate:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Progress bar animation */
+.progress-animate {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Chip/tag animation */
+.chip-animate {
+  transition: all 0.2s ease;
+}
+.chip-animate:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Confirmation dialog */
+.confirm-animate {
+  animation: scaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Empty state */
+.empty-state-animate {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Error state */
+.error-state-animate {
+  animation: fadeIn 0.4s ease forwards;
+}

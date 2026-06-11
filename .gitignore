@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+uploads/*
+!uploads/.gitkeep
+backend/whatsapp-auth/
+backend/uploads/
+npm-debug.log*
+.DS_Store
