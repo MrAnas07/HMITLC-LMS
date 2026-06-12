@@ -20,21 +20,9 @@ if (missingVars.length > 0) {
 }
 
 const { default: app } = await import("./app.js");
-const { connectDatabase } = await import("./config/database.js");
-const { startWhatsAppService } = await import("./utils/whatsappService.js");
-startWhatsAppService();
 
 const port = process.env.PORT || 5000;
 
-const startServer = async () => {
-  await connectDatabase();
-
-  app.listen(port, () => {
-    console.log(`API running on http://localhost:${port}`);
-  });
-};
-
-startServer().catch((error) => {
-  console.error("Failed to start server:", error);
-  process.exit(1);
+app.listen(port, () => {
+  console.log(`API running on http://localhost:${port}`);
 });

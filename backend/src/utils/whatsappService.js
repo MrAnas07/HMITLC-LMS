@@ -156,6 +156,10 @@ export const getWhatsAppStatus = () => ({
 
 export const startWhatsAppService = () => {
   if (hasStarted) return;
+  if (process.env.NODE_ENV === "production") {
+    console.log("WhatsApp bot disabled in production (Vercel serverless).");
+    return;
+  }
   hasStarted = true;
   connectToWhatsApp().catch((error) => {
     lastError = error.message;
