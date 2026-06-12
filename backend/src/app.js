@@ -19,17 +19,11 @@ import attendanceRoutes from "./routes/attendance.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import quizRoutes from "./routes/quiz.routes.js";
 import { errorHandler, notFound } from "./middleware/error.middleware.js";
-import { connectDatabase } from "./config/database.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
-// Connect to MongoDB (cached for serverless)
-connectDatabase().catch((err) => {
-  console.error("MongoDB connection failed:", err.message);
-});
 
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
