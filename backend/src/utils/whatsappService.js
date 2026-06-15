@@ -34,7 +34,10 @@ const connectToWhatsApp = async () => {
     auth: state,
     browser: ["HMITLC Bot", "Chrome", "1.0.0"],
     markOnlineOnConnect: false,
-    syncFullHistory: false
+    syncFullHistory: false,
+    connectTimeoutMs: 60000,
+    defaultQueryTimeoutMs: 0,
+    keepAliveIntervalMs: 30000
   });
 
   sock.ev.on("connection.update", async (update) => {
