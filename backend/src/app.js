@@ -1,5 +1,4 @@
 import compression from "compression";
-import cors from "cors";
 import express from "express";
 import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
@@ -7,6 +6,8 @@ import morgan from "morgan";
 import path from "path";
 import xss from "xss-clean";
 import { fileURLToPath } from "url";
+
+import { setCORSHeaders } from "./middleware/corsMiddleware.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import courseRoutes from "./routes/course.routes.js";
@@ -30,24 +31,10 @@ connectDatabase().catch((err) => {
   console.error("MongoDB connection failed:", err.message);
 });
 
-// CORS - MUST be first, before EVERYTHING
-const corsOptions = {
-  origin: [
-    "https://hmitlc-lms.vercel.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-  ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 200,
-  maxAge: 3600,
-};
+// CORS headers first
+app.use(setCORSHeaders);
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-
-// Helmet after CORS
+// Helmet
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
