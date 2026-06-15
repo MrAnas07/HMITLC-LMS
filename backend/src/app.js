@@ -1,4 +1,5 @@
 import compression from "compression";
+import cors from "cors";
 import express from "express";
 import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
@@ -29,31 +30,36 @@ connectDatabase().catch((err) => {
   console.error("MongoDB connection failed:", err.message);
 });
 
+// CORS - MUST be first
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://hmitlc-lms.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:3000"
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200,
+  maxAge: 86400
+}));
+
+// Preflight requests
+app.options("*", cors());
+
+// Helmet - after CORS
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com", "blob:"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      connectSrc: ["'self'", process.env.CLIENT_URL || "http://localhost:5173"],
-      mediaSrc: ["'self'", "blob:", "mediastream:"],
-    }
-  }
 }));
+
 app.use(compression());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://hmitlc-lms.vercel.app');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization, Accept, Origin');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  next();
-});
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(mongoSanitize());

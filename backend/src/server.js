@@ -21,18 +21,13 @@ if (missingVars.length > 0) {
 
 const { default: app } = await import("./app.js");
 const { connectDatabase } = await import("./config/database.js");
+const { startWhatsAppService } = await import("./utils/whatsappService.js");
 
 await connectDatabase();
+startWhatsAppService();
 
-// Only listen when NOT on Vercel (local development)
-if (!process.env.VERCEL) {
-  const { startWhatsAppService } = await import("./utils/whatsappService.js");
-  startWhatsAppService();
+const port = process.env.PORT || 5000;
 
-  const port = process.env.PORT || 5000;
-  app.listen(port, () => {
-    console.log(`API running on http://localhost:${port}`);
-  });
-}
-
-export default app;
+app.listen(port, () => {
+  console.log(`API running on http://localhost:${port}`);
+});
