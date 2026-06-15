@@ -30,31 +30,24 @@ connectDatabase().catch((err) => {
   console.error("MongoDB connection failed:", err.message);
 });
 
-// CORS - MUST be first
-app.use(cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "https://hmitlc-lms.vercel.app",
-      "http://localhost:5173",
-      "http://localhost:3000"
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+// CORS - MUST be first, before EVERYTHING
+const corsOptions = {
+  origin: [
+    "https://hmitlc-lms.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 200,
-  maxAge: 86400
-}));
+  maxAge: 3600,
+};
 
-// Preflight requests
-app.options("*", cors());
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
-// Helmet - after CORS
+// Helmet after CORS
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
