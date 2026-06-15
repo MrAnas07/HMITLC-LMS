@@ -21,8 +21,8 @@ if (missingVars.length > 0) {
 
 const { default: app } = await import("./app.js");
 const { connectDatabase } = await import("./config/database.js");
-const { startWhatsAppService } = await import("./utils/whatsappService.js");
-startWhatsAppService();
+// const { startWhatsAppService } = await import("./utils/whatsappService.js");
+// startWhatsAppService();
 
 const port = process.env.PORT || 5000;
 
