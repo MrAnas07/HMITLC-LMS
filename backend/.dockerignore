@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+whatsapp-auth
+uploads
+dist
+.git
+.gitignore
