@@ -1,10 +1,16 @@
-import functions from "firebase-functions";
-import { fileURLToPath } from "url";
-import path from "path";
+const functions = require("firebase-functions");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let app;
 
-const { default: app } = await import(path.join(__dirname, "..", "src", "app.js"));
+const getApp = async () => {
+  if (!app) {
+    const mod = await import("../src/app.js");
+    app = mod.default;
+  }
+  return app;
+};
 
-export const api = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(async (req, res) => {
+  const expressApp = await getApp();
+  return expressApp(req, res);
+});

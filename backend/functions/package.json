@@ -1,7 +1,6 @@
 {
   "name": "functions",
   "description": "Firebase Cloud Functions for HMITLC LMS",
-  "type": "module",
   "engines": {
     "node": "20"
   },
