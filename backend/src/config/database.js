@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
-import bcrypt from "bcryptjs";
 
 let isConnected = false;
 
@@ -22,12 +21,11 @@ export const connectDatabase = async () => {
     const adminExists = await User.findOne({ role: "admin" });
     if (!adminExists) {
       console.log("Seeding Master Admin Account...");
-      const hashedPassword = await bcrypt.hash("AnasAdmin2026!", 10);
 
       await User.create({
         name: "Muhammad Anas",
         email: "admin@hmitlc.edu.pk",
-        password: hashedPassword,
+        password: "AnasAdmin2026!",
         role: "admin",
       });
 
