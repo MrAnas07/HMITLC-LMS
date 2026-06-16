@@ -8,7 +8,7 @@ import { STORAGE_KEYS } from '../constants';
 
 // Create base API client
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://hmitlc-backend-api.vercel.app/api',
+  baseURL: "/api",
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
