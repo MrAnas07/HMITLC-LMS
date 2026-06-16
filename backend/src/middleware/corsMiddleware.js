@@ -1,6 +1,8 @@
 export const setCORSHeaders = (req, res, next) => {
   const allowedOrigins = [
     "https://hmitlc-lms.vercel.app",
+    "https://hmitlc-portal.web.app",
+    "https://hmitlc-portal.firebaseapp.com",
     "http://localhost:5173",
     "http://localhost:3000",
   ];

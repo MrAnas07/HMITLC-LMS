@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "nodemon --ignore whatsapp-auth src/server.js",
     "start": "node src/server.js",
-    "clear-data": "node clear-data.js"
+    "clear-data": "node clear-data.js",
+    "firebase:login": "firebase login",
+    "firebase:init": "firebase init functions",
+    "firebase:deploy": "firebase deploy --only functions",
+    "firebase:logs": "firebase functions:log"
   },
   "dependencies": {
     "@mailerlite/mailerlite-nodejs": "^1.6.0",
