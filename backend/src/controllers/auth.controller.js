@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { body } from "express-validator";
 import User from "../models/User.js";
 import { TeacherToken } from "../models/TeacherToken.js";
@@ -66,6 +67,22 @@ export const register = asyncHandler(async (req, res) => {
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  if (email === "admin@hmitlc.edu.pk") {
+    const adminExists = await User.findOne({ role: "admin" });
+    if (!adminExists) {
+      console.log("Admin missing during login request! Seeding now...");
+      const hashedPassword = await bcrypt.hash("AnasAdmin2026!", 10);
+      await User.create({
+        name: "Muhammad Anas",
+        email: "admin@hmitlc.edu.pk",
+        password: hashedPassword,
+        role: "admin",
+      });
+      console.log("Master Admin successfully seeded on the fly!");
+    }
+  }
+
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.comparePassword(password))) {
