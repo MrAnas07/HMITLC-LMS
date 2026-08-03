@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const isServerless = process.env.VERCEL || process.env.RENDER;
+const isServerless = process.env.VERCEL;
 
 if (!isServerless) {
   const requiredEnvVars = [
