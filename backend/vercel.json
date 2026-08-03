@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "firewall": {
+    "enabled": false
+  },
   "builds": [
     {
       "src": "api/index.js",
