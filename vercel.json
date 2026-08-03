@@ -6,6 +6,9 @@
       "use": "@vercel/node"
     }
   ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build --prefix frontend",
+  "outputDirectory": "frontend/dist",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -18,8 +21,11 @@
       "dest": "api/index.js"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "api/index.js"
+      "dest": "frontend/dist/index.html"
     }
   ]
 }
