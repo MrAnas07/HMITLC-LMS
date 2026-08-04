@@ -3,9 +3,6 @@ import sys
 import os
 import time
 import signal
-import atexit
-import urllib.request
-import json
 import threading
 
 backend_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +25,7 @@ import spaces
 
 @spaces.GPU(cpu=True)
 def check_status():
+    import urllib.request, json
     try:
         req = urllib.request.Request("http://localhost:5000/api/health")
         with urllib.request.urlopen(req, timeout=10) as resp:
@@ -40,7 +38,9 @@ demo = gr.Interface(
     inputs=[],
     outputs=gr.Text(label="API Status"),
     title="HMITLC Backend Engine",
-    description="API is running. Admin panel: /gradio",
+    description="Backend running. Use /api/* endpoints.",
 )
 
 demo.launch(server_port=7860)
+
+signal.pause()
