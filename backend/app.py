@@ -35,38 +35,22 @@ for i in range(30):
     except Exception:
         time.sleep(1)
 
-from fastapi import FastAPI, Request
-from fastapi.responses import Response
 import gradio as gr
-import httpx
+import spaces
 
-app = FastAPI()
-
-@app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
-async def proxy(path: str, request: Request):
-    body = await request.body()
-    headers = {k: v for k, v in request.headers.items() if k.lower() != "host"}
-
-    async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
-        resp = await client.request(
-            method=request.method,
-            url=f"http://localhost:5000/{path}",
-            headers=headers,
-            content=body if body else None,
-            params=dict(request.query_params),
-        )
-        return Response(
-            content=resp.content,
-            status_code=resp.status_code,
-            headers={k: v for k, v in resp.headers.items() if k.lower() not in ("transfer-encoding", "content-encoding")},
-        )
+@spaces.GPU(cpu=True)
+def check_status():
+    try:
+        req = urllib.request.Request("http://localhost:5000/api/health")
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return resp.read().decode()
+    except Exception as e:
+        return json.dumps({"status": "error", "message": str(e)})
 
 demo = gr.Interface(
-    fn=lambda: json.dumps({"status": "ok", "service": "it-lms-api"}),
+    fn=check_status,
     inputs=[],
-    outputs="text",
-    title="HMITLC API",
-    description="Backend API running on Hugging Face Spaces",
+    outputs=gr.Text(label="API Status"),
+    title="HMITLC Backend API",
+    description="Node.js API running. Access endpoints at /api/*",
 )
-
-app = gr.mount_gradio_app(app, demo, path="/gradio")
