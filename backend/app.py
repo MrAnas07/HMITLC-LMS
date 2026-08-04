@@ -2,7 +2,6 @@ import subprocess
 import sys
 import os
 import time
-import signal
 import threading
 
 backend_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,4 +42,5 @@ demo = gr.Interface(
 
 demo.launch(server_port=7860)
 
-signal.pause()
+while True:
+    time.sleep(3600)
