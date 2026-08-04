@@ -9,6 +9,8 @@ import json
 
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 
+subprocess.run(["npm", "install"], cwd=backend_dir, stdout=sys.stdout, stderr=sys.stderr)
+
 node_proc = subprocess.Popen(
     ["node", "src/server.js"],
     cwd=backend_dir,
