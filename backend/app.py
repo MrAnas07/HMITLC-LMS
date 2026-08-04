@@ -38,7 +38,9 @@ for i in range(30):
         time.sleep(1)
 
 import gradio as gr
+import spaces
 
+@spaces.GPU(cpu=True)
 def check_status():
     try:
         req = urllib.request.Request("http://localhost:5000/api/health")
