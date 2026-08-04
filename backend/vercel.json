@@ -9,13 +9,6 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index.js",
-      "mitigate": {
-        "action": "bypass"
-      }
-    },
-    {
-      "src": "/(.*)",
       "dest": "api/index.js"
     }
   ]

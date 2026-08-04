@@ -2,6 +2,12 @@
   "installCommand": "npm install && cd frontend && npm install",
   "buildCommand": "cd frontend && npm run build",
   "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://hmitlc-backend-api.vercel.app/api/:path*"
+    }
+  ],
   "routes": [
     {
       "handle": "filesystem"
