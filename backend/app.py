@@ -9,7 +9,7 @@ import json
 
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 
-subprocess.run(["npm", "install"], cwd=backend_dir, stdout=sys.stdout, stderr=sys.stderr)
+subprocess.run(["npm", "install", "--omit=dev"], cwd=backend_dir, capture_output=True)
 
 node_proc = subprocess.Popen(
     ["node", "src/server.js"],
@@ -38,9 +38,7 @@ for i in range(30):
         time.sleep(1)
 
 import gradio as gr
-import spaces
 
-@spaces.GPU(cpu=True)
 def check_status():
     try:
         req = urllib.request.Request("http://localhost:5000/api/health")
@@ -54,5 +52,7 @@ demo = gr.Interface(
     inputs=[],
     outputs=gr.Text(label="API Status"),
     title="HMITLC Backend API",
-    description="Node.js API running. Access endpoints at /api/*",
+    description="Backend is running. Use /api/* endpoints.",
 )
+
+demo.launch(server_port=7860)
