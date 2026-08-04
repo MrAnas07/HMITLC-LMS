@@ -3,10 +3,10 @@ title: HMITLC Backend Engine
 emoji: 🚀
 colorFrom: blue
 colorTo: indigo
-sdk: docker
-app_port: 5000
+sdk: gradio
+app_port: 7860
 pinned: false
 ---
 
-# HMITLC Portal Central API Service
-Automated background persistent container mapping matrix for node servers.
+# HMITLC Backend API
+Node.js Express backend running as subprocess via Gradio SDK.
