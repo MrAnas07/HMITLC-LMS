@@ -7,6 +7,7 @@ import atexit
 import urllib.request
 import json
 import threading
+import asyncio
 
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,8 +40,6 @@ async def startup():
             return
         except Exception:
             await asyncio.sleep(1)
-
-import asyncio
 
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"])
 async def proxy(path: str, request: Request):
