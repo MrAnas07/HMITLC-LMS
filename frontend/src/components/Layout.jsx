@@ -16,7 +16,8 @@ const Layout = () => {
   const [open, setOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const stored = localStorage.getItem("lms_dark_mode");
-    return stored ? JSON.parse(stored) : false;
+    if (!stored || stored === "undefined" || stored === "null") return false;
+    try { return JSON.parse(stored); } catch { return false; }
   });
   const { user, logout } = useAuth();
   const navigate = useNavigate();

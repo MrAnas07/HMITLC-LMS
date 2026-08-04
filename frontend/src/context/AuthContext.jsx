@@ -6,7 +6,8 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("lms_user");
-    return stored ? JSON.parse(stored) : null;
+    if (!stored || stored === "undefined" || stored === "null") return null;
+    try { return JSON.parse(stored); } catch { return null; }
   });
   const [booting, setBooting] = useState(true);
 

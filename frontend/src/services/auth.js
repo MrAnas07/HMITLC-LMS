@@ -49,7 +49,8 @@ export const authService = {
   // Get stored user
   getStoredUser: () => {
     const userStr = localStorage.getItem(STORAGE_KEYS.USER);
-    return userStr ? JSON.parse(userStr) : null;
+    if (!userStr || userStr === "undefined" || userStr === "null") return null;
+    try { return JSON.parse(userStr); } catch { return null; }
   },
 
   // Check user role
