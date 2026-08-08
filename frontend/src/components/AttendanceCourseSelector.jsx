@@ -34,7 +34,7 @@ const AttendanceCourseSelector = ({ userRole, onBack }) => {
       setError(null);
       try {
         const token = localStorage.getItem("lms_token");
-        const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        const baseURL = import.meta.env.VITE_API_URL || "https://hmitlc-backend.onrender.com/api";
         const params = userRole === "teacher" ? { mine: "true" } : {};
         const res = await axios.get(`${baseURL}/courses`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},

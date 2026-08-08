@@ -16,7 +16,7 @@ export const VALIDATION = {
 
 // API Configuration
 export const API = {
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  BASE_URL: import.meta.env.VITE_API_URL || 'https://hmitlc-backend.onrender.com/api',
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
   ENDPOINTS: {

@@ -9,7 +9,7 @@ import { STORAGE_KEYS } from '../constants';
 // Create base API client
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "https://hmitlc-backend.onrender.com/api",
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },

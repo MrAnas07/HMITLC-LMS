@@ -72,7 +72,7 @@ const QuizEntranceDesk = () => {
 
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const apiUrl = import.meta.env.VITE_API_URL || "https://hmitlc-backend.onrender.com/api";
       const res = await axios.post(`${apiUrl}/quiz/verify-key`, {
         studentName: formData.studentName,
         cnic: formData.cnic,

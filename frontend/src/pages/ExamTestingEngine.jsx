@@ -41,7 +41,7 @@ const ExamTestingEngine = ({ examData, studentId, studentName }) => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/quiz/submit`, {
+      await axios.post(`${import.meta.env.VITE_API_URL || "https://hmitlc-backend.onrender.com/api"}/quiz/submit`, {
         quizId: examData.quizId,
         studentId,
         answers: selectedAnswers,

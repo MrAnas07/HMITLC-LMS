@@ -18,7 +18,7 @@ const VerifyStudentPage = () => {
       setPulseRefresh(true);
     }
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const apiUrl = import.meta.env.VITE_API_URL || "https://hmitlc-backend.onrender.com/api";
       const res = await axios.get(`${apiUrl}/admissions/verify/${studentId}`);
       if (res.data.verified) {
         setStudent(res.data.data);
