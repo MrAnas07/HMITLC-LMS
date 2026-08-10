@@ -414,6 +414,21 @@ const AdmissionPage = () => {
                   />
                   <FieldError message={errors.address?.message} />
                 </label>
+
+                <div className="md:col-span-2">
+                  <span className="text-xs font-semibold sm:text-sm">Gender *</span>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Male" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
+                      <input type="radio" value="Male" {...register("gender", { required: "Gender is required" })} />
+                      Male
+                    </label>
+                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Female" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
+                      <input type="radio" value="Female" {...register("gender", { required: "Gender is required" })} />
+                      Female
+                    </label>
+                  </div>
+                  <FieldError message={errors.gender?.message} />
+                </div>
               </div>
               <div ref={profilePictureRef} className="mt-5 flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50 sm:mt-6 sm:rounded-3xl sm:p-5">
                 <span className="mb-2 text-xs font-semibold text-slate-700 dark:text-slate-200 sm:text-sm">Student Profile Picture *</span>
@@ -536,20 +551,6 @@ const AdmissionPage = () => {
                   </select>
                   <FieldError message={errors.referralSource?.message} />
                 </label>
-                <div>
-                  <span className="text-xs font-semibold sm:text-sm">Gender *</span>
-                  <div className="mt-2 grid grid-cols-2 gap-3">
-                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Male" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
-                      <input type="radio" value="Male" {...register("gender", { required: "Gender is required" })} />
-                      Male
-                    </label>
-                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Female" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
-                      <input type="radio" value="Female" {...register("gender", { required: "Gender is required" })} />
-                      Female
-                    </label>
-                  </div>
-                  <FieldError message={errors.gender?.message} />
-                </div>
                 <div>
                   <span className="text-xs font-semibold sm:text-sm">Do you have a Laptop?</span>
                   <div className="mt-2 grid grid-cols-2 gap-3">
