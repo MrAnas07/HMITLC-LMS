@@ -4,13 +4,23 @@ import { api } from "../api/client";
 const SeatAllocationPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [maleSeats, setMaleSeats] = useState({});
+  const [femaleSeats, setFemaleSeats] = useState({});
 
   const fetchCourses = async () => {
     try {
       setLoading(true);
       const res = await api.get("/courses");
       const data = res.data;
-      setCourses(data.courses || data.data || data || []);
+      const list = data.courses || data.data || data || [];
+      setCourses(list);
+      const m = {}, f = {};
+      list.forEach(c => {
+        m[c._id] = c.seatAllocation?.male ?? 20;
+        f[c._id] = c.seatAllocation?.female ?? 20;
+      });
+      setMaleSeats(m);
+      setFemaleSeats(f);
     } catch (error) {
       console.error("Failed to fetch courses:", error);
     } finally {
@@ -18,9 +28,26 @@ const SeatAllocationPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchCourses();
-  }, []);
+  useEffect(() => { fetchCourses(); }, []);
+
+  const saveSeatAllocation = async (courseId) => {
+    const male = parseInt(maleSeats[courseId], 10) || 0;
+    const female = parseInt(femaleSeats[courseId], 10) || 0;
+    if (male + female < 1) return;
+    try {
+      await api.patch(`/courses/${courseId}/seats`, {
+        seatAllocation: { male, female }
+      });
+      fetchCourses();
+    } catch (err) {
+      console.error("Seat allocation update failed:", err);
+    }
+  };
+
+  const totalMale = courses.reduce((a, c) => a + (c.seatAllocation?.male || 0), 0);
+  const totalFemale = courses.reduce((a, c) => a + (c.seatAllocation?.female || 0), 0);
+  const filledMale = courses.reduce((a, c) => a + (c.seatAllocation?.filledMale || 0), 0);
+  const filledFemale = courses.reduce((a, c) => a + (c.seatAllocation?.filledFemale || 0), 0);
 
   return (
     <div className="page-enter min-h-screen bg-gray-50 dark:bg-slate-950">
@@ -39,38 +66,18 @@ const SeatAllocationPage = () => {
             Seat <span className="bg-gradient-to-r from-[#1045b8] via-blue-500 to-[#f59e0b] bg-clip-text text-transparent">Allocation</span> Manager
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 sm:text-base">
-            Set seat limits per course and track real-time enrollment capacity.
+            Set male/female seat limits per course and track real-time enrollment capacity.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto -mt-4 mb-6 max-w-5xl px-4 sm:-mt-4 sm:mb-8 sm:px-6">
+      <div className="mx-auto -mt-4 mb-6 max-w-6xl px-4 sm:mb-8 sm:px-6">
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           {[
-            {
-              label: "Total Courses",
-              value: courses.length,
-              icon: "📚",
-              color: "from-blue-50 to-blue-100 border-blue-200 text-blue-700"
-            },
-            {
-              label: "Total Seats",
-              value: courses.reduce((a, c) => a + (c.totalSeats || 40), 0),
-              icon: "💺",
-              color: "from-purple-50 to-purple-100 border-purple-200 text-purple-700"
-            },
-            {
-              label: "Seats Booked",
-              value: courses.reduce((a, c) => a + (c.seatsBooked || 0), 0),
-              icon: "✅",
-              color: "from-green-50 to-green-100 border-green-200 text-green-700"
-            },
-            {
-              label: "Seats Available",
-              value: courses.reduce((a, c) => a + (c.seatsAvailable ?? c.totalSeats ?? 40), 0),
-              icon: "🟢",
-              color: "from-yellow-50 to-yellow-100 border-yellow-200 text-yellow-700"
-            }
+            { label: "Total Courses", value: courses.length, icon: "📚", color: "from-blue-50 to-blue-100 border-blue-200 text-blue-700" },
+            { label: "Male Seats", value: `${filledMale}/${totalMale}`, icon: "👨", color: "from-blue-50 to-blue-100 border-blue-200 text-blue-700" },
+            { label: "Female Seats", value: `${filledFemale}/${totalFemale}`, icon: "👩", color: "from-pink-50 to-pink-100 border-pink-200 text-pink-700" },
+            { label: "Available", value: `${totalMale + totalFemale - filledMale - filledFemale}`, icon: "🟢", color: "from-green-50 to-green-100 border-green-200 text-green-700" }
           ].map((stat) => (
             <div key={stat.label} className={`card-animate rounded-2xl border bg-gradient-to-br ${stat.color} p-3 text-center shadow-sm sm:p-5`}>
               <div className="mb-2 text-xl sm:text-2xl">{stat.icon}</div>
@@ -81,7 +88,7 @@ const SeatAllocationPage = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl px-4 pb-12 sm:px-6 sm:pb-16">
+      <div className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 sm:pb-16">
         {loading ? (
           <div className="py-12 text-center text-slate-400 sm:py-16">
             <div className="mb-3 text-3xl animate-pulse-soft sm:text-4xl">⏳</div>
@@ -95,10 +102,17 @@ const SeatAllocationPage = () => {
           </div>
         ) : (
           courses.map((course) => {
-            const total = course.totalSeats || 40;
-            const booked = course.seatsBooked || 0;
-            const available = course.seatsAvailable ?? total;
+            const sa = course.seatAllocation || {};
+            const male = sa.male || 0;
+            const female = sa.female || 0;
+            const filledM = sa.filledMale || 0;
+            const filledF = sa.filledFemale || 0;
+            const total = male + female;
+            const booked = filledM + filledF;
+            const available = total - booked;
             const pct = total > 0 ? Math.round((booked / total) * 100) : 0;
+            const malePct = male > 0 ? Math.round((filledM / male) * 100) : 0;
+            const femalePct = female > 0 ? Math.round((filledF / female) * 100) : 0;
             const isFull = available === 0;
             const isAlmostFull = pct >= 80 && !isFull;
 
@@ -118,22 +132,45 @@ const SeatAllocationPage = () => {
                   </div>
                 </div>
 
+                {/* Male / Female Bar Charts */}
+                <div className="mb-4 grid grid-cols-2 gap-3 sm:gap-6">
+                  <div>
+                    <div className="mb-1 flex justify-between text-[10px] sm:text-xs">
+                      <span className="font-semibold text-blue-700">👨 Male</span>
+                      <span className="font-black text-blue-700">{filledM}/{male} ({malePct}%)</span>
+                    </div>
+                    <div className="h-3 w-full rounded-full bg-blue-100 sm:h-4">
+                      <div className="h-3 rounded-full bg-blue-600 transition-all duration-700 sm:h-4" style={{ width: `${malePct}%` }} />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="mb-1 flex justify-between text-[10px] sm:text-xs">
+                      <span className="font-semibold text-pink-600">👩 Female</span>
+                      <span className="font-black text-pink-600">{filledF}/{female} ({femalePct}%)</span>
+                    </div>
+                    <div className="h-3 w-full rounded-full bg-pink-100 sm:h-4">
+                      <div className="h-3 rounded-full bg-pink-500 transition-all duration-700 sm:h-4" style={{ width: `${femalePct}%` }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary row */}
                 <div className="mb-4 flex flex-wrap items-center gap-3 sm:gap-8">
                   <div className="text-center">
-                    <div className="text-xl font-black text-[#1045b8] sm:text-3xl">{booked}</div>
+                    <div className="text-xl font-black text-[#1045b8] sm:text-2xl">{booked}</div>
                     <div className="mt-0.5 text-[10px] font-medium text-slate-500 sm:text-xs">Booked</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-black text-green-600 sm:text-3xl">{available}</div>
+                    <div className="text-xl font-black text-green-600 sm:text-2xl">{available}</div>
                     <div className="mt-0.5 text-[10px] font-medium text-slate-500 sm:text-xs">Available</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-black text-slate-700 dark:text-white sm:text-3xl">{total}</div>
+                    <div className="text-xl font-black text-slate-700 dark:text-white sm:text-2xl">{total}</div>
                     <div className="mt-0.5 text-[10px] font-medium text-slate-500 sm:text-xs">Total</div>
                   </div>
                   <div className="min-w-[120px] flex-1">
                     <div className="mb-1.5 flex justify-between text-[10px] text-slate-500 sm:text-xs">
-                      <span className="font-medium">Occupancy</span>
+                      <span className="font-medium">Total Occupancy</span>
                       <span className="font-black">{pct}%</span>
                     </div>
                     <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800 sm:h-4">
@@ -147,29 +184,33 @@ const SeatAllocationPage = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 dark:border-slate-800 sm:flex-row sm:items-center">
+                {/* Male/Female Seat Inputs */}
+                <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:gap-6">
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-slate-600 dark:text-slate-400 sm:text-xs">
-                      Update Total Seats:
+                    <label className="whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-blue-700 sm:text-xs">
+                      👨 Male Seats:
                     </label>
                     <input
                       type="number"
-                      min="1"
-                      defaultValue={total}
-                      className="input-animate w-20 rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold focus:border-[#1045b8] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white sm:w-24"
-                      onBlur={async (event) => {
-                        const newSeats = parseInt(event.target.value, 10);
-                        if (newSeats > 0 && newSeats !== total) {
-                          try {
-                            await api.patch(`/courses/${course._id}/seats`, { totalSeats: newSeats });
-                            fetchCourses();
-                          } catch (error) {
-                            console.error("Seat update failed:", error);
-                          }
-                        }
-                      }}
+                      min="0"
+                      value={maleSeats[course._id] ?? male}
+                      onChange={(e) => setMaleSeats(prev => ({ ...prev, [course._id]: e.target.value }))}
+                      className="input-animate w-20 rounded-xl border border-blue-200 px-3 py-2 text-sm font-bold focus:border-blue-600 focus:outline-none dark:border-blue-800 dark:bg-slate-800 dark:text-white sm:w-24"
+                      onBlur={() => saveSeatAllocation(course._id)}
                     />
-                    <span className="text-[10px] text-slate-400 sm:text-xs">Click outside to save</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <label className="whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-pink-600 sm:text-xs">
+                      👩 Female Seats:
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={femaleSeats[course._id] ?? female}
+                      onChange={(e) => setFemaleSeats(prev => ({ ...prev, [course._id]: e.target.value }))}
+                      className="input-animate w-20 rounded-xl border border-pink-200 px-3 py-2 text-sm font-bold focus:border-pink-500 focus:outline-none dark:border-pink-800 dark:bg-slate-800 dark:text-white sm:w-24"
+                      onBlur={() => saveSeatAllocation(course._id)}
+                    />
                   </div>
                   <div className="ml-auto">
                     <button

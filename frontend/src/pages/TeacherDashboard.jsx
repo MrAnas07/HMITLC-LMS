@@ -43,6 +43,7 @@ const initialCourse = {
   prerequisites: "",
   learningOutcomes: [],
   courseOutline: [],
+  seatAllocation: { male: 20, female: 20 },
   isPublished: true
 };
 
@@ -83,7 +84,7 @@ const TeacherDashboard = () => {
     try {
       const payload = new FormData();
       Object.entries(form).forEach(([key, value]) => {
-        if (key === "learningOutcomes" || key === "courseOutline") {
+        if (key === "learningOutcomes" || key === "courseOutline" || key === "seatAllocation") {
           payload.append(key, JSON.stringify(value));
         } else {
           payload.append(key, value);
@@ -123,6 +124,7 @@ const TeacherDashboard = () => {
       prerequisites: course.prerequisites || "",
       learningOutcomes: course.learningOutcomes || [],
       courseOutline: course.courseOutline || [],
+      seatAllocation: course.seatAllocation || { male: 20, female: 20 },
       isPublished: course.isPublished
     });
   };
@@ -547,6 +549,41 @@ const TeacherDashboard = () => {
                     <Plus size={16} /> Add Module
                   </button>
                 </div>
+              </div>
+
+              <div className="block">
+                <span className="mb-2 flex items-center gap-2 text-sm font-black text-slate-800 dark:text-slate-100">
+                  <ImageIcon size={15} /> Seat Allocation
+                </span>
+                <div className="mt-2 grid grid-cols-2 gap-3">
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-bold text-blue-700">👨 Male Seats</span>
+                    <input
+                      className="input input-animate min-h-[44px]"
+                      type="number"
+                      min="0"
+                      value={form.seatAllocation?.male ?? 20}
+                      onChange={(event) => setForm((prev) => ({
+                        ...prev,
+                        seatAllocation: { ...prev.seatAllocation, male: parseInt(event.target.value) || 0 }
+                      }))}
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-bold text-pink-600">👩 Female Seats</span>
+                    <input
+                      className="input input-animate min-h-[44px]"
+                      type="number"
+                      min="0"
+                      value={form.seatAllocation?.female ?? 20}
+                      onChange={(event) => setForm((prev) => ({
+                        ...prev,
+                        seatAllocation: { ...prev.seatAllocation, female: parseInt(event.target.value) || 0 }
+                      }))}
+                    />
+                  </label>
+                </div>
+                <p className="mt-1 text-[10px] text-slate-400">Total: {(form.seatAllocation?.male || 0) + (form.seatAllocation?.female || 0)} seats</p>
               </div>
 
               <label className="block">

@@ -63,7 +63,12 @@ const admissionSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected", "Graduated"],
-      default: "Pending"
+      default: "Pending",
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+      required: [true, "Gender is required"],
     },
     decisionNote: { type: String, trim: true, maxlength: 600 },
     rejectionReason: { type: String, default: "", trim: true },

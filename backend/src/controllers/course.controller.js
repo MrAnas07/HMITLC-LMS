@@ -70,13 +70,28 @@ export const createCourse = asyncHandler(async (req, res) => {
 
   let learningOutcomes = [];
   let courseOutline = [];
+  let seatAllocation = { male: 20, female: 20 };
   try { learningOutcomes = JSON.parse(req.body.learningOutcomes || "[]"); } catch {}
   try { courseOutline = JSON.parse(req.body.courseOutline || "[]"); } catch {}
+  try {
+    const sa = JSON.parse(req.body.seatAllocation || "{}");
+    seatAllocation = {
+      male: Number(sa.male) || 20,
+      female: Number(sa.female) || 20,
+      filledMale: 0,
+      filledFemale: 0
+    };
+  } catch {}
+
+  const totalSeats = (seatAllocation.male || 0) + (seatAllocation.female || 0);
 
   const course = await Course.create({
     ...req.body,
     learningOutcomes,
     courseOutline,
+    seatAllocation,
+    totalSeats: totalSeats || 40,
+    seatsAvailable: totalSeats || 40,
     thumbnailUrl,
     introVideoUrl,
     resources,
@@ -97,6 +112,16 @@ export const updateCourse = asyncHandler(async (req, res) => {
   const updateData = { ...req.body };
   try { updateData.learningOutcomes = JSON.parse(req.body.learningOutcomes || "[]"); } catch {}
   try { updateData.courseOutline = JSON.parse(req.body.courseOutline || "[]"); } catch {}
+  try {
+    const sa = JSON.parse(req.body.seatAllocation || "{}");
+    if (course.seatAllocation) {
+      course.seatAllocation.male = Number(sa.male) || course.seatAllocation.male;
+      course.seatAllocation.female = Number(sa.female) || course.seatAllocation.female;
+      course.totalSeats = (course.seatAllocation.male || 0) + (course.seatAllocation.female || 0);
+      course.seatsAvailable = Math.max(0, course.totalSeats - course.seatsBooked);
+    }
+    delete updateData.seatAllocation;
+  } catch {}
 
   Object.assign(course, updateData);
 
@@ -119,17 +144,28 @@ export const updateCourse = asyncHandler(async (req, res) => {
 });
 
 export const updateCourseSeats = asyncHandler(async (req, res) => {
-  const totalSeats = Number(req.body.totalSeats);
-  if (!Number.isInteger(totalSeats) || totalSeats < 1) {
-    throw new ApiError(400, "Total seats must be at least 1");
-  }
-
   const course = await Course.findById(req.params.id);
   if (!course) throw new ApiError(404, "Course not found");
 
-  const diff = totalSeats - course.totalSeats;
-  course.totalSeats = totalSeats;
-  course.seatsAvailable = Math.max(0, course.seatsAvailable + diff);
+  // Support seatAllocation update (male/female)
+  if (req.body.seatAllocation) {
+    const sa = req.body.seatAllocation;
+    if (sa.male !== undefined) course.seatAllocation.male = Number(sa.male) || 0;
+    if (sa.female !== undefined) course.seatAllocation.female = Number(sa.female) || 0;
+  }
+
+  // Support totalSeats update (legacy)
+  if (req.body.totalSeats !== undefined) {
+    const totalSeats = Number(req.body.totalSeats);
+    if (!Number.isInteger(totalSeats) || totalSeats < 1) {
+      throw new ApiError(400, "Total seats must be at least 1");
+    }
+    course.totalSeats = totalSeats;
+  } else {
+    course.totalSeats = (course.seatAllocation.male || 0) + (course.seatAllocation.female || 0);
+  }
+
+  course.seatsAvailable = Math.max(0, course.totalSeats - course.seatsBooked);
   await course.save();
 
   res.json({ success: true, course });

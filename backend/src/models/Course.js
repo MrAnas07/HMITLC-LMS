@@ -67,7 +67,13 @@ const courseSchema = new mongoose.Schema(
     applicationCount: { type: Number, default: 0 },
     totalSeats: { type: Number, default: 40, min: 1 },
     seatsAvailable: { type: Number, default: 40, min: 0 },
-    seatsBooked: { type: Number, default: 0 }
+    seatsBooked: { type: Number, default: 0 },
+    seatAllocation: {
+      male: { type: Number, default: 20 },
+      female: { type: Number, default: 20 },
+      filledMale: { type: Number, default: 0 },
+      filledFemale: { type: Number, default: 0 }
+    }
   },
   { timestamps: true }
 );

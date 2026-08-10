@@ -57,7 +57,8 @@ const AdmissionPage = () => {
       computerProficiency: "",
       lastQualification: "",
       referralSource: "",
-      hasLaptop: ""
+      hasLaptop: "",
+      gender: ""
     },
     mode: "onChange"
   });
@@ -152,7 +153,7 @@ const AdmissionPage = () => {
   const nextStep = async () => {
     const valid = await trigger([
       "fullName", "fatherName", "dateOfBirth", "email",
-      "phone", "fatherPhone", "cnic", "fatherCnic", "address"
+      "phone", "fatherPhone", "cnic", "fatherCnic", "address", "gender"
     ]);
 
     const phoneError = !isPhoneValid(watchedValues.phone || "");
@@ -535,6 +536,20 @@ const AdmissionPage = () => {
                   </select>
                   <FieldError message={errors.referralSource?.message} />
                 </label>
+                <div>
+                  <span className="text-xs font-semibold sm:text-sm">Gender *</span>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Male" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
+                      <input type="radio" value="Male" {...register("gender", { required: "Gender is required" })} />
+                      Male
+                    </label>
+                    <label className={`flex cursor-pointer min-h-[44px] items-center justify-center gap-2 rounded-md border p-3 text-sm font-semibold ${watchedValues.gender === "Female" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-300"}`}>
+                      <input type="radio" value="Female" {...register("gender", { required: "Gender is required" })} />
+                      Female
+                    </label>
+                  </div>
+                  <FieldError message={errors.gender?.message} />
+                </div>
                 <div>
                   <span className="text-xs font-semibold sm:text-sm">Do you have a Laptop?</span>
                   <div className="mt-2 grid grid-cols-2 gap-3">

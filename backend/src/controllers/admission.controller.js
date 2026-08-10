@@ -30,6 +30,7 @@ export const admissionRules = [
   body("lastQualification").isIn(["Matric", "Intermediate", "Graduate", "Other"]),
   body("referralSource").isIn(["Facebook", "Instagram", "Friend", "Google", "Other"]),
   body("hasLaptop").isBoolean().withMessage("Laptop selection is required"),
+  body("gender").isIn(["Male", "Female"]).withMessage("Gender must be Male or Female"),
   body("selectedCourse").optional({ checkFalsy: true }).isMongoId().withMessage("Invalid course"),
   body("profilePicture").optional({ checkFalsy: true }).isString()
 ];
@@ -61,6 +62,19 @@ export const createAdmission = asyncHandler(async (req, res) => {
         success: false,
         message: "This course is full. No seats available. Please check back later when admin opens new seats."
       });
+    }
+    // Gender-based seat check
+    const gender = req.body.gender;
+    if (gender && selectedCourse.seatAllocation) {
+      const genderKey = gender === "Male" ? "male" : "female";
+      const filledKey = gender === "Male" ? "filledMale" : "filledFemale";
+      const alloc = selectedCourse.seatAllocation;
+      if (alloc[genderKey] !== undefined && alloc[filledKey] >= alloc[genderKey]) {
+        return res.status(400).json({
+          success: false,
+          message: `No ${gender} seats available in this course. Only ${alloc[genderKey] - alloc[filledKey]} seats remain for ${gender} students.`
+        });
+      }
     }
   }
 
@@ -105,6 +119,7 @@ export const createAdmission = asyncHandler(async (req, res) => {
     selectedCourse: selectedCourse?._id,
     student: req.user._id,
     status: "Pending",
+    gender: req.body.gender,
     profilePicture: req.body.profilePicture || ""
   };
 
@@ -276,9 +291,19 @@ export const decideAdmission = asyncHandler(async (req, res, next) => {
   }
 
   if (isApproving && courseId) {
+    const gender = admission.gender || "Male";
+    const genderKey = gender === "Male" ? "male" : "female";
+    const filledKey = gender === "Male" ? "filledMale" : "filledFemale";
+
     const course = await Course.findOneAndUpdate(
       { _id: courseId, seatsAvailable: { $gt: 0 } },
-      { $inc: { seatsAvailable: -1, seatsBooked: 1 } },
+      {
+        $inc: {
+          seatsAvailable: -1,
+          seatsBooked: 1,
+          [`seatAllocation.${filledKey}`]: 1
+        }
+      },
       { new: true }
     );
 
@@ -296,16 +321,28 @@ export const decideAdmission = asyncHandler(async (req, res, next) => {
 
   if (!updated) {
     if (isApproving && courseId) {
+      const gender = admission.gender || "Male";
+      const filledKey = gender === "Male" ? "filledMale" : "filledFemale";
       await Course.findByIdAndUpdate(courseId, {
-        $inc: { seatsAvailable: 1, seatsBooked: -1 }
+        $inc: {
+          seatsAvailable: 1,
+          seatsBooked: -1,
+          [`seatAllocation.${filledKey}`]: -1
+        }
       });
     }
     throw new ApiError(500, "Failed to update admission");
   }
 
   if (isUnapproving && courseId) {
+    const gender = admission.gender || "Male";
+    const filledKey = gender === "Male" ? "filledMale" : "filledFemale";
     await Course.findByIdAndUpdate(courseId, {
-      $inc: { seatsAvailable: 1, seatsBooked: -1 }
+      $inc: {
+        seatsAvailable: 1,
+        seatsBooked: -1,
+        [`seatAllocation.${filledKey}`]: -1
+      }
     });
   }
 
@@ -431,6 +468,22 @@ export const updateStudentStatus = asyncHandler(async (req, res) => {
   const oldStatus = admission.status;
   admission.status = newStatus;
   await admission.save();
+
+  // Release seat on Graduation or Rejection from Approved
+  if (newStatus === "Graduated" || newStatus === "Rejected") {
+    const courseId = admission.selectedCourse;
+    if (courseId) {
+      const gender = admission.gender || "Male";
+      const filledKey = gender === "Male" ? "filledMale" : "filledFemale";
+      await Course.findByIdAndUpdate(courseId, {
+        $inc: {
+          seatsAvailable: 1,
+          seatsBooked: -1,
+          [`seatAllocation.${filledKey}`]: -1
+        }
+      });
+    }
+  }
 
   if (newStatus === "Graduated") {
     const graduationMsg =
