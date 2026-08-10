@@ -20,7 +20,7 @@ import { api, getErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { showToast } from "../components/Toast";
 
-const defaultQuestion = { questionText: "", options: ["", "", "", ""], correctOptionIndex: 0 };
+const defaultQuestion = () => ({ questionText: "", options: ["", "", "", ""], correctOptionIndex: 0 });
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
@@ -34,7 +34,7 @@ const TeacherQuizForm = () => {
     courseName: "",
     batchName: ""
   });
-  const [questions, setQuestions] = useState([{ ...defaultQuestion }]);
+  const [questions, setQuestions] = useState([defaultQuestion()]);
   const [loading, setLoading] = useState(false);
   const [expandedQuestion, setExpandedQuestion] = useState(0);
 
@@ -63,7 +63,7 @@ const TeacherQuizForm = () => {
   }, [user]);
 
   const addQuestion = () => {
-    setQuestions([...questions, { ...defaultQuestion }]);
+    setQuestions([...questions, defaultQuestion()]);
     setExpandedQuestion(questions.length);
   };
 
@@ -76,14 +76,15 @@ const TeacherQuizForm = () => {
   };
 
   const updateQuestion = (idx, field, value) => {
-    const updated = [...questions];
-    updated[idx][field] = value;
+    const updated = questions.map((q, i) => i === idx ? { ...q, [field]: value } : q);
     setQuestions(updated);
   };
 
   const updateOption = (qIdx, oIdx, value) => {
-    const updated = [...questions];
-    updated[qIdx].options[oIdx] = value;
+    const updated = questions.map((q, i) => {
+      if (i !== qIdx) return q;
+      return { ...q, options: q.options.map((opt, j) => j === oIdx ? value : opt) };
+    });
     setQuestions(updated);
   };
 
@@ -123,7 +124,7 @@ const TeacherQuizForm = () => {
       });
       showToast(res.data.message, "success");
       setQuizInfo({ title: "", quizKey: "", durationInMinutes: 30, courseName: "", batchName: "" });
-      setQuestions([{ ...defaultQuestion }]);
+      setQuestions([defaultQuestion()]);
       setExpandedQuestion(0);
     } catch (err) {
       showToast(getErrorMessage(err), "error");
