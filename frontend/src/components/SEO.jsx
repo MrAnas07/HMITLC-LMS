@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = "HMITLC";
+const SITE_NAME = "HMITLC LMS";
 const SITE_URL = "https://hmitlc-lms.vercel.app";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
