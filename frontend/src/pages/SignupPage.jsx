@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import SEO from "../components/SEO";
 
 const SignupPage = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "student", teacherCode: "" });
@@ -22,6 +23,11 @@ const SignupPage = () => {
 
   return (
     <section className="section grid min-h-[70vh] place-items-center page-enter">
+      <SEO
+        title="Sign Up"
+        description="Create your free HMITLC account as a student or teacher. Start your IT learning journey with professional courses in Karachi."
+        path="/signup"
+      />
       <form
         className="w-full max-w-md mx-auto rounded-lg border border-slate-200 bg-white p-4 sm:p-6 md:p-8 shadow-soft"
         onSubmit={submit}

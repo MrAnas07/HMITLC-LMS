@@ -11,6 +11,7 @@ import { showToast, showError } from '../components/Toast';
 import { generateHMITLCIdCard } from '../utils/hml2canvasIdCardGenerator';
 import { preloadImage } from '../utils/imageLoader';
 import { VALIDATION } from '../constants';
+import SEO from '../components/SEO';
 
 // Validation helpers
 const isCnicValid = (value) => new RegExp(`^\\d{${VALIDATION.CNIC_LENGTH}}$`).test(value);
@@ -97,6 +98,11 @@ const AdmissionsPage = () => {
 
   return (
     <section className="page-enter relative isolate min-h-[calc(100vh-80px)] overflow-hidden bg-white py-8 dark:bg-slate-950 sm:py-10 md:py-12">
+      <SEO
+        title="Admissions & ID Card Portal"
+        description="Apply for admission at Hasrat Mohani IT Literacy Centre or download your student ID card. Start your free IT education journey in Karachi."
+        path="/admissions"
+      />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(16,69,184,0.20),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(245,158,11,0.16),transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] dark:bg-[radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.18),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.12),transparent_28%),linear-gradient(180deg,#020617,#0f172a)]" />
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}

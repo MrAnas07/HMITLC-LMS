@@ -14,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { api, getErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import SEO from "../components/SEO";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -105,6 +106,12 @@ const CourseDetailsPage = () => {
 
   return (
     <section className="page-enter relative isolate min-h-screen bg-white dark:bg-slate-950">
+      <SEO
+        title={course.title || "Course Details"}
+        description={course.description?.slice(0, 160) || `${course.title} - ${course.level || ""} level IT course at HMITLC Karachi. Duration: ${course.duration || "N/A"}. Enroll now for practical training.`}
+        path={`/courses/${course.slug || id}`}
+        image={course.thumbnailUrl}
+      />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(16,69,184,0.20),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(245,158,11,0.16),transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] dark:bg-[radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.18),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.12),transparent_28%),linear-gradient(180deg,#020617,#0f172a)]" />
 
       {/* Hero Section */}

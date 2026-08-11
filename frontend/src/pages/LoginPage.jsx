@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import SEO from "../components/SEO";
 
 const LoginPage = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -24,6 +25,11 @@ const LoginPage = () => {
 
   return (
     <section className="section grid min-h-[70vh] place-items-center page-enter">
+      <SEO
+        title="Login"
+        description="Login to your HMITLC student, teacher, or admin account. Access your dashboard, courses, and admission status."
+        path="/login"
+      />
       <form
         className="w-full max-w-md mx-auto rounded-lg border border-slate-200 bg-white p-4 sm:p-6 md:p-8 shadow-soft"
         onSubmit={submit}

@@ -3,6 +3,7 @@ import { BookOpenCheck, Filter, GraduationCap, Search, Sparkles } from "lucide-r
 import { useEffect, useMemo, useState } from "react";
 import { api, getErrorMessage } from "../api/client";
 import CoursePreviewCard from "../components/home/CoursePreviewCard";
+import SEO from "../components/SEO";
 
 const categoriesList = [
   "All",
@@ -58,6 +59,11 @@ const CoursesPage = () => {
       transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
       className="overflow-hidden bg-slate-50 dark:bg-slate-950"
     >
+      <SEO
+        title="Explore IT Courses"
+        description="Browse professional IT courses at HMITLC Karachi. Compare Web Development, Cybersecurity, AI, UI/UX Design and more programs with duration, level, and admission details."
+        path="/courses"
+      />
       <section className="relative isolate overflow-hidden bg-white dark:bg-slate-950">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(16,69,184,0.20),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(245,158,11,0.16),transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] dark:bg-[radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.18),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.12),transparent_28%),linear-gradient(180deg,#020617,#0f172a)]" />
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 md:py-16 lg:px-8">

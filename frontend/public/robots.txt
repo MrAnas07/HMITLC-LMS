@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Allow: /courses
+Allow: /courses/*
+Allow: /about
+Allow: /contact
+Allow: /admissions
+Allow: /login
+Allow: /signup
+Allow: /quiz
+Allow: /verify/*
+
+Disallow: /admission
+Disallow: /student
+Disallow: /dashboard/*
+Disallow: /admin
+Disallow: /teacher
+Disallow: /scan-attendance
+Disallow: /create-quiz
+Disallow: /quiz/edit/*
+
+Sitemap: https://hmitlc-lms.vercel.app/sitemap.xml

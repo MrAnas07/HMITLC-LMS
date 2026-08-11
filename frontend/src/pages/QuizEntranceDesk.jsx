@@ -17,6 +17,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import ExamTestingEngine from "./ExamTestingEngine";
 import { api, getErrorMessage } from "../api/client";
+import SEO from "../components/SEO";
 
 const QuizEntranceDesk = () => {
   const { user } = useAuth();
@@ -101,6 +102,11 @@ const QuizEntranceDesk = () => {
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#f8fafc] via-white to-[#f0f4ff] px-4 py-8 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:py-12">
+      <SEO
+        title="Quiz Portal"
+        description="Enter the HMITLC examination portal. Verify your identity with a secret quiz key provided by your teacher to start your online exam."
+        path="/quiz"
+      />
       <div className="w-full max-w-md">
         {/* Header */}
         <motion.div

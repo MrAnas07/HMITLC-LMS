@@ -1,7 +1,13 @@
 import { Award, BookOpenCheck, Building2, UsersRound } from "lucide-react";
+import SEO from "../components/SEO";
 
 const AboutPage = () => (
   <div className="page-enter min-h-screen bg-slate-50 dark:bg-slate-950">
+    <SEO
+      title="About HMITLC"
+      description="Learn about Hasrat Mohani IT Literacy Centre (HMITLC) - a free IT education initiative in Karachi, Pakistan. 500+ graduates, practical training, and industry-relevant courses."
+      path="/about"
+    />
 
     {/* HERO SECTION */}
     <div className="relative isolate overflow-hidden bg-white px-4 py-12 text-slate-950 dark:bg-slate-950 dark:text-white sm:px-6 sm:py-16 md:py-20 lg:px-8">

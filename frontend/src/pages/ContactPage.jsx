@@ -2,6 +2,7 @@ import { Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { api, getErrorMessage } from "../api/client";
 import { showToast } from "../components/Toast";
+import SEO from "../components/SEO";
 
 const ContactPage = () => {
   const [form, setForm] = useState({
@@ -35,6 +36,11 @@ const ContactPage = () => {
 
   return (
     <main className="page-enter bg-slate-50 dark:bg-slate-950">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with Hasrat Mohani IT Literacy Centre (HMITLC) in Karachi. Ask about FREE IT courses, admission process, batches, or career guidance."
+        path="/contact"
+      />
       <section className="relative isolate overflow-hidden bg-white px-4 py-10 text-slate-950 dark:bg-slate-950 dark:text-white sm:px-6 sm:py-14 md:py-20 lg:px-8">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(16,69,184,0.20),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(245,158,11,0.16),transparent_28%),linear-gradient(180deg,#ffffff,#f8fafc)] dark:bg-[radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.18),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.12),transparent_28%),linear-gradient(180deg,#020617,#0f172a)]" />
         <div className="relative mx-auto max-w-7xl text-center">

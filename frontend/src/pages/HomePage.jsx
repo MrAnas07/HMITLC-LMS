@@ -7,6 +7,7 @@ import HeroSection from "../components/home/HeroSection";
 import StatsSection from "../components/home/StatsSection";
 import Testimonials from "../components/home/Testimonials";
 import WhyChooseSection from "../components/home/WhyChooseSection";
+import SEO from "../components/SEO";
 
 const fallbackCourses = [
   {
@@ -79,6 +80,11 @@ const HomePage = () => {
       transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
       className="overflow-hidden"
     >
+      <SEO
+        title="Free IT Courses in Karachi"
+        description="Hasrat Mohani IT Literacy Centre offers free and professional IT courses in Karachi, Pakistan. Enroll in Web Development, Cybersecurity, Graphic Design, Digital Marketing and more."
+        path="/"
+      />
       <HeroSection />
       <FeaturedCourses courses={courses} />
       <WhyChooseSection />

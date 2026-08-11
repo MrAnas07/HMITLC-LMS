@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RefreshCw, CheckCircle2, XCircle, ShieldCheck, Clock, GraduationCap, BookOpen, User, CreditCard } from "lucide-react";
+import SEO from "../components/SEO";
 
 const VerifyStudentPage = () => {
   const { studentId } = useParams();
@@ -86,6 +87,11 @@ const VerifyStudentPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#f8fafc] via-white to-[#f0f4ff] px-4 py-8 sm:py-10 md:py-12">
+      <SEO
+        title="Student ID Verification"
+        description="Verify a Hasrat Mohani IT Literacy Centre (HMITLC) student ID card. Check student enrollment status, course, and batch details."
+        path={`/verify/${studentId}`}
+      />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
