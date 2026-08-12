@@ -750,6 +750,7 @@ const AdminPanel = () => {
                   <p className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-800"><Laptop size={16} className="mb-2 text-[#1045b8]" /> Laptop: {admission.hasLaptop ? "Yes" : "No"}</p>
                   <p className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-800"><ShieldCheck size={16} className="mb-2 text-[#1045b8]" /> Referral: {admission.referralSource}</p>
                   <p className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-800"><Wallet size={16} className="mb-2 text-[#1045b8]" /> Fee: {admission.selectedCourse?.price ? `Rs ${admission.selectedCourse.price}` : "Free/Not set"}</p>
+                  <p className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-800"><Users size={16} className="mb-2 text-[#1045b8]" /> Gender: {admission.gender || "Not specified"}</p>
                   <p className="min-w-0 rounded-2xl bg-slate-50 p-3 dark:bg-slate-800 sm:col-span-2 xl:col-span-3"><MapPin size={16} className="mb-2 text-[#1045b8]" /> <span className="break-words">{admission.address}</span></p>
                 </div>
               </motion.article>
